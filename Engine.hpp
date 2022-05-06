@@ -25,5 +25,6 @@ namespace MSQ
         void start(unsigned int sampleRate, unsigned int framesPerBuffer);
         void stop();
         std::vector<const PaDeviceInfo*> getDevices();
+		static std::string deviceInfoToString(const PaDeviceInfo* info);
     };
 }
