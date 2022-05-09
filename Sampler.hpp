@@ -1,12 +1,12 @@
 #include "Playable.hpp"
+#include "Sample.hpp"
 
 namespace MSQ
 {
 	class Sampler : public Playable
 	{
-		float* sample;
+		Sample* sample_;
 	public:
-		Sampler(float* sample, unsigned long sampleSize);
-
+		Sampler(Sample* sample);
 	};
 }

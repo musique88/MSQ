@@ -6,9 +6,9 @@ namespace MSQ
 	Sample::Sample(std::string path)
 	{
 		SndfileHandle f(path);
-		frameCount = f.frames();
-		channelCount = f.channels();
-		sampleRate = f.samplerate();
+		frameCount_ = f.frames();
+		channelCount_ = f.channels();
+		sampleRate_ = f.samplerate();
 
 		sample_ = new float[frameCount * channelCount];
 
@@ -23,5 +23,20 @@ namespace MSQ
 	const float* Sample::getSample() const
 	{
 		return sample_;
+	}
+
+	unsigned long Sample::getFrameCount() const
+	{
+		return frameCount_;
+	}
+
+	unsigned int Sample::getChannelCount() const 
+	{
+		return channelCount_;
+	}
+
+	unsigned int Sample::getSampleRate() const 
+	{
+		return sampleRate_;
 	}
 }

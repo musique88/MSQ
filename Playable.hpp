@@ -16,9 +16,12 @@ namespace MSQ
         float* output_;
         const float* input_;
     public:
-        Playable(unsigned int sampleRate, unsigned int bufferSize,
-                 unsigned int inputChannels = 2, unsigned int outputChannels = 2,
-                 unsigned int inputStreams = 1, unsigned int outputStreams = 1);
+        Playable(unsigned int sampleRate, 
+				unsigned int bufferSize,
+                unsigned int inputChannels = 2, 
+				unsigned int outputChannels = 2,
+                unsigned int inputStreams = 1, 
+				unsigned int outputStreams = 1);
 
         virtual void setInput(const float* input);
         float* getOutput() const;
