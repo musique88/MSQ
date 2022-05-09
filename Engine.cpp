@@ -5,10 +5,14 @@
 
 namespace MSQ
 {
-	Engine::Engine()
+	Engine::Engine(unsigned int sampleRate, unsigned int framesPerBuffer)
+	: sampleRate_(sampleRate), framesPerBuffer_(framesPerBuffer)
 	{
 		if(int err = Pa_Initialize())
 			printPaErr(err);
+
+		streamParameters.in.device = -1;
+		streamParameters.out.device = -1;
 	}
 
 	Engine::~Engine()
@@ -25,13 +29,13 @@ namespace MSQ
 					 void *userData) 
 	{
 		Engine* engine = (Engine*)userData;
-
+		float* out = (float*)output;
 		engine->mainPipeline->setInput((const float*)input);
 		engine->mainPipeline->processAudio();
 		float* eOut = engine->mainPipeline->getOutput();
 		std::copy(eOut, 
 				eOut + frameCount * engine->mainPipeline->getOutputChannels(), 
-				(float*)output);
+				out);
 
 		return paContinue;
 	}
@@ -55,17 +59,20 @@ namespace MSQ
 		streamParameters.out.hostApiSpecificStreamInfo = nullptr;
 	}
 
-	void Engine::start(unsigned int sampleRate, unsigned int framesPerBuffer)
+	void Engine::start()
 	{
-		mainPipeline = new PlayablePipeline(sampleRate,
-											framesPerBuffer,
+		mainPipeline = new PlayablePipeline(sampleRate_,
+											framesPerBuffer_,
 											streamParameters.in.channelCount,
 											streamParameters.out.channelCount);
+		PaStreamParameters* in = streamParameters.in.device == -1 ? nullptr : &streamParameters.in;
+		PaStreamParameters* out = streamParameters.out.device == -1 ? nullptr : &streamParameters.out;
+
 		int err = Pa_OpenStream(&stream_,
-					  &streamParameters.in,
-					  &streamParameters.out,
-					  sampleRate,
-					  framesPerBuffer,
+					  in,
+					  out,
+					  sampleRate_,
+					  framesPerBuffer_,
 					  paNoFlag,
 					  &Engine::callback,
 					  this);

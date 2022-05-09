@@ -1,3 +1,5 @@
+#pragma once
+
 #include <portaudio.h>
 #include "PlayablePipeline.hpp"
 #include <string>
@@ -15,14 +17,18 @@ namespace MSQ
 					 void *userData);
 		PaStream* stream_;
 		struct {PaStreamParameters in; PaStreamParameters out;} streamParameters;
+		unsigned int sampleRate_;
+		unsigned int framesPerBuffer_;
 
 	public:
 		PlayablePipeline* mainPipeline;
-		Engine();
+		Engine(unsigned int sampleRate, unsigned int framesPerBuffer);
 		~Engine();
 		void setInputParameters(PaDeviceIndex dev, unsigned int channels);
 		void setOutputParameters(PaDeviceIndex dev, unsigned int channels);
-		void start(unsigned int sampleRate, unsigned int framesPerBuffer);
+		unsigned int getSampleRate();
+		unsigned int getFramesPerBuffer();
+		void start();
 		void stop();
 		std::vector<const PaDeviceInfo*> getDevices();
 		static std::string deviceInfoToString(const PaDeviceInfo* info);
