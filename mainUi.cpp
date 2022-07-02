@@ -9,24 +9,20 @@
 #include <iostream>
 #include <cstdlib>
 
-int main() 
+GLFWwindow *window;
+
+void uiStart()
 {
-	if (!glfwInit())
-				return 1;
+
 	const char *glsl_version = "#version 130";
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
-	GLFWwindow *window = glfwCreateWindow(1280, 720, "Dear ImGui - Conan", NULL, NULL);
-	if (window == NULL)
-		return 1;
+	window = glfwCreateWindow(1280, 720, "Dear ImGui - Conan", NULL, NULL);
 	glfwMakeContextCurrent(window);
 	glfwSwapInterval(1); // Enable vsync
 	bool err = glewInit() != GLEW_OK;
 	if (err)
-	{
 		fprintf(stderr, "Failed to initialize OpenGL loader!\n");
-			return 1;
-	}
 
 	int screen_width, screen_height;
 	glfwGetFramebufferSize(window, &screen_width, &screen_height);
@@ -40,6 +36,23 @@ int main()
 	ImGui_ImplOpenGL3_Init(glsl_version);
 	// Setup Dear ImGui style
 	ImGui::StyleColorsDark();
+	
+}
+
+void uiKill()
+{
+	ImGui_ImplOpenGL3_Shutdown();
+	ImGui_ImplGlfw_Shutdown();
+	ImGui::DestroyContext();
+
+	glfwDestroyWindow(window);
+	glfwTerminate();
+}
+
+
+int main() 
+{
+	uiStart();
 	srand(0);
 	bool active = true;
 	MSQ::Engine e(192000, 512);
@@ -72,11 +85,7 @@ int main()
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 		glfwSwapBuffers(window);
 	}
-	ImGui_ImplOpenGL3_Shutdown();
-	ImGui_ImplGlfw_Shutdown();
-	ImGui::DestroyContext();
-
-	glfwDestroyWindow(window);
-	glfwTerminate();
+	uiKill();
 	return 0;
 }
+

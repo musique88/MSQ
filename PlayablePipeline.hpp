@@ -8,7 +8,7 @@ namespace MSQ
     {
         std::vector<Playable*> playables;
     public:
-        PlayablePipeline(unsigned int sampleRate, unsigned int bufferSize_,
+        PlayablePipeline(PlayableInfo plInfo,
                  unsigned int inputChannels = 2, unsigned int outputChannels = 2,
                  unsigned int inputStreams = 1, unsigned int outputStreams = 1);
         void setInput(const float* input) override;

@@ -1,12 +1,22 @@
 #include "Renderable.hpp"
+#include "Parameter.hpp"
+#include <unordered_map>
+#include <string>
 
 namespace MSQ
 {
+    struct PlayableInfo{
+        unsigned int sampleRate;
+        unsigned int bufferSize;
+    };
+
     class Playable : public Renderable
     {
     protected:
-        unsigned int sampleRate_;
-        unsigned int bufferSize_;
+        Playable* parent_;
+        std::unordered_map<std::string, Parameter> parameters_;
+
+        PlayableInfo plInfo_;
 
         unsigned int inputChannels_;
         unsigned int outputChannels_;
@@ -15,13 +25,26 @@ namespace MSQ
 
         float* output_;
         const float* input_;
+
+        void registerParam(std::string name, Parameter param);
     public:
-        Playable(unsigned int sampleRate, 
-				unsigned int bufferSize,
+        Playable(PlayableInfo plInfo,
                 unsigned int inputChannels = 2, 
 				unsigned int outputChannels = 2,
                 unsigned int inputStreams = 1, 
 				unsigned int outputStreams = 1);
+
+        Playable(Playable* parent,
+                unsigned int inputChannels = 2, 
+				unsigned int outputChannels = 2,
+                unsigned int inputStreams = 1, 
+				unsigned int outputStreams = 1);
+
+        void setParent(Playable* parent);
+        const Playable* getParent() const;
+
+        float getParameter(std::string name);
+        float setParameter(std::string name, float value);
 
         virtual void setInput(const float* input);
         float* getOutput() const;

@@ -3,28 +3,29 @@
 
 namespace MSQ
 {
-    PlayableRack::PlayableRack(unsigned int sampleRate, unsigned int bufferSize,
+    PlayableRack::PlayableRack(PlayableInfo plInfo,
                  unsigned int inputChannels, unsigned int outputChannels,
                  unsigned int inputStreams, unsigned int outputStreams)
-        : Playable(sampleRate, bufferSize, inputChannels, outputChannels, inputStreams, outputStreams)
+        : Playable(plInfo, inputChannels, outputChannels, inputStreams, outputStreams)
     {}
 
     void PlayableRack::reallocOutput()
     {
         delete output_;
-        output_ = new float[bufferSize_ * outputChannels_ * outputStreams_];
+        output_ = new float[plInfo_.bufferSize * outputChannels_ * outputStreams_];
     }
 
     void PlayableRack::resetInputs()
     {
         for(unsigned int i = 0; i < playables.size(); i++)
-            playables[i]->setInput(&input_[i * bufferSize_ * inputChannels_]);
+            playables[i]->setInput(&input_[i * plInfo_.bufferSize * inputChannels_]);
     }
 
     void PlayableRack::insert(unsigned int at, Playable* playable)
     {
         outputStreams_++;
         inputStreams_++;
+        playable->setParent(this);
         playables.insert(playables.begin() + at, playable);
         resetInputs();
         reallocOutput();
@@ -34,6 +35,7 @@ namespace MSQ
     {
         outputStreams_--;
         inputStreams_--;
+        playables[at]->setParent(nullptr);
         playables.erase(playables.begin() + at);
         resetInputs();
         reallocOutput();
@@ -44,9 +46,9 @@ namespace MSQ
         for(Playable* playable : playables)
             playable->processAudio();
         for(unsigned int i = 0; i < playables.size(); i++)
-            std::memcpy(&output_[i * bufferSize_ * outputChannels_],
+            std::memcpy(&output_[i * plInfo_.bufferSize * outputChannels_],
                         playables[i]->getOutput(),
-                        bufferSize_ * outputChannels_ * sizeof(float));
+                        plInfo_.bufferSize * outputChannels_ * sizeof(float));
     }
 
     bool PlayableRack::isCorrect() const

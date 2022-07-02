@@ -8,7 +8,7 @@ namespace MSQ
         void resetInputs();
         std::vector<Playable*> playables;
     public:
-        PlayableRack(unsigned int sampleRate, unsigned int bufferSize,
+        PlayableRack(PlayableInfo plInfo,
                  unsigned int inputChannels = 2, unsigned int outputChannels = 2,
                  unsigned int inputStreams = 1, unsigned int outputStreams = 1);
         void processAudio() override;

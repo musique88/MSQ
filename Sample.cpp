@@ -10,9 +10,9 @@ namespace MSQ
 		channelCount_ = f.channels();
 		sampleRate_ = f.samplerate();
 
-		sample_ = new float[frameCount * channelCount];
+		sample_ = new float[frameCount_ * channelCount_];
 
-		f.readf(sample_, frameCount);
+		f.readf(sample_, frameCount_);
 	}
 
 	Sample::~Sample()

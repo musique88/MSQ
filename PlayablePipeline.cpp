@@ -2,10 +2,10 @@
 
 namespace MSQ
 {
-    PlayablePipeline::PlayablePipeline(unsigned int sampleRate, unsigned int bufferSize,
+    PlayablePipeline::PlayablePipeline(PlayableInfo plInfo,
                                        unsigned int inputChannels, unsigned int outputChannels,
                                        unsigned int inputStreams, unsigned int outputStreams)
-        : Playable(sampleRate, bufferSize, inputChannels, outputChannels, inputStreams, outputStreams)
+        : Playable(plInfo, inputChannels, outputChannels, inputStreams, outputStreams)
     {
         delete output_;
     }
@@ -34,6 +34,7 @@ namespace MSQ
 
     void PlayablePipeline::insert(unsigned int at, Playable* playable)
     {
+        playable->setParent(this);
         playables.insert(playables.begin() + at, playable);
         if(at == 0)
             playable->setInput(input_);
@@ -48,6 +49,9 @@ namespace MSQ
 
     void PlayablePipeline::remove(unsigned int at)
     {
+        Playable* oldPlayable = playables[at];
+        oldPlayable->setParent(nullptr);
+
         playables.erase(playables.begin() + at);
         if(at == 0)
             playables[0]->setInput(input_);

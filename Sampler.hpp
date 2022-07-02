@@ -6,7 +6,15 @@ namespace MSQ
 	class Sampler : public Playable
 	{
 		Sample* sample_;
+
+		float speed_;
+		float sampleRateRatio_;
+		unsigned int positionInSample_;
+
 	public:
-		Sampler(Sample* sample);
+		Sampler(PlayableInfo plInfo, Sample* sample);
+		void processAudio() override;
+		void sendMidi(int& msg) override;
+		void render() override;
 	};
 }

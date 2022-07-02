@@ -61,8 +61,7 @@ namespace MSQ
 
 	void Engine::start()
 	{
-		mainPipeline = new PlayablePipeline(sampleRate_,
-											framesPerBuffer_,
+		mainPipeline = new PlayablePipeline({sampleRate_, framesPerBuffer_},
 											streamParameters.in.channelCount,
 											streamParameters.out.channelCount);
 		PaStreamParameters* in = streamParameters.in.device == -1 ? nullptr : &streamParameters.in;

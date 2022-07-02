@@ -2,15 +2,40 @@
 
 namespace MSQ
 {
-    Playable::Playable(unsigned int sampleRate, unsigned int bufferSize,
+    void Playable::registerParam(std::string name, Parameter param)
+    {
+        parameters_[name] = param;
+    }
+
+    Playable::Playable(PlayableInfo plInfo,
                        unsigned int inputChannels, unsigned int outputChannels,
                        unsigned int inputStreams, unsigned int outputStreams)
-        : sampleRate_(sampleRate), bufferSize_(bufferSize),
+        : plInfo_(plInfo),
           inputChannels_(inputChannels), outputChannels_(outputChannels),
           inputStreams_(inputStreams), outputStreams_(outputStreams)
     {
-        output_ = new float[bufferSize_ * outputChannels_ * outputStreams_];
+        output_ = new float[plInfo_.bufferSize * outputChannels_ * outputStreams_];
         input_ = nullptr;
+        parent_ = nullptr;
+    }
+
+    Playable::Playable(Playable* parent,
+                       unsigned int inputChannels, unsigned int outputChannels,
+                       unsigned int inputStreams, unsigned int outputStreams)
+        : Playable(parent->plInfo_,
+          inputChannels, outputChannels, inputStreams, outputStreams)
+    {
+        parent_ = parent;
+    }
+
+    void Playable::setParent(Playable* parent)
+    {
+        parent_ = parent;
+    }
+
+    const Playable* Playable::getParent() const
+    {
+        return parent_;
     }
 
     const unsigned int& Playable::getInputChannels() const
