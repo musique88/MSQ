@@ -1,10 +1,10 @@
-#include "Playable.hpp"
+#include "core/Playable.hpp"
 
 namespace MSQ
 {
     void Playable::registerParam(std::string name, Parameter param)
     {
-        parameters_[name] = param;
+        parameters_.insert(std::make_pair(name, param));
     }
 
     Playable::Playable(PlayableInfo plInfo,

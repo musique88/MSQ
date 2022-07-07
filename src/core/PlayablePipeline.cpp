@@ -1,4 +1,4 @@
-#include "PlayablePipeline.hpp"
+#include "core/PlayablePipeline.hpp"
 
 namespace MSQ
 {
@@ -84,6 +84,7 @@ namespace MSQ
 
 	void PlayablePipeline::render()
 	{
-
-	}
+        for(unsigned int i = 0; i < playables.size(); i++)
+            playables[i]->render();
+    }
 }

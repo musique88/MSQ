@@ -1,4 +1,4 @@
-#include "Engine.hpp"
+#include "core/Engine.hpp"
 #include <iostream>
 #include <algorithm>
 #include <sstream>
@@ -116,4 +116,14 @@ namespace MSQ
 			"\n\tDefault High Output Latency: " << info->defaultHighOutputLatency << "\n";
 		return ss.str();
 	}
+
+	unsigned int Engine::getFramesPerBuffer() const 
+	{
+		return framesPerBuffer_;
+	}
+
+	unsigned int Engine::getSampleRate() const 
+	{
+		return sampleRate_;
+	}	
 }

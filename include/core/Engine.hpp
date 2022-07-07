@@ -1,7 +1,7 @@
 #pragma once
 
 #include <portaudio.h>
-#include "PlayablePipeline.hpp"
+#include "core/PlayablePipeline.hpp"
 #include <string>
 
 namespace MSQ
@@ -26,8 +26,8 @@ namespace MSQ
 		~Engine();
 		void setInputParameters(PaDeviceIndex dev, unsigned int channels);
 		void setOutputParameters(PaDeviceIndex dev, unsigned int channels);
-		unsigned int getSampleRate();
-		unsigned int getFramesPerBuffer();
+		unsigned int getSampleRate() const;
+		unsigned int getFramesPerBuffer() const;
 		void start();
 		void stop();
 		std::vector<const PaDeviceInfo*> getDevices();

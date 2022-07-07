@@ -1,4 +1,4 @@
-#include "Sample.hpp"
+#include "core/Sample.hpp"
 #include <sndfile.hh>
 
 namespace MSQ
@@ -9,6 +9,7 @@ namespace MSQ
 		frameCount_ = f.frames();
 		channelCount_ = f.channels();
 		sampleRate_ = f.samplerate();
+		path_ = path;
 
 		sample_ = new float[frameCount_ * channelCount_];
 
@@ -20,22 +21,27 @@ namespace MSQ
 		delete sample_;
 	}
 
+	const std::string Sample::getPath() const
+	{
+		return path_;
+	}
+
 	const float* Sample::getSample() const
 	{
 		return sample_;
 	}
 
-	unsigned long Sample::getFrameCount() const
+	const unsigned long Sample::getFrameCount() const
 	{
 		return frameCount_;
 	}
 
-	unsigned int Sample::getChannelCount() const 
+	const unsigned int Sample::getChannelCount() const 
 	{
 		return channelCount_;
 	}
 
-	unsigned int Sample::getSampleRate() const 
+	const unsigned int Sample::getSampleRate() const 
 	{
 		return sampleRate_;
 	}

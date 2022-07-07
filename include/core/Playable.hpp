@@ -1,5 +1,7 @@
-#include "Renderable.hpp"
-#include "Parameter.hpp"
+#pragma once
+
+#include "core/Renderable.hpp"
+#include "core/Parameter.hpp"
 #include <unordered_map>
 #include <string>
 

@@ -1,4 +1,4 @@
-#include "Playable.hpp"
+#include "core/Playable.hpp"
 #include <vector>
 
 namespace MSQ
